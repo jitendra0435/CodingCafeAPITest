@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="AddCampaign" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-02-04T13:54:02" hostname="admin1-LIVA-Z2V" time="3.874">
+  <properties/>
+  <testcase name="givenMethodForGetCampaignDetailsByItsShortName" classname="AddCampaign" time="3.874"/>
+  <system-out><![CDATA[{
+    "status": "200",
+    "data": {
+        "id": "5e340193816db70006a1b57a",
+        "campaignName": "TestingCafe",
+        "campaignShortName": "ASA",
+        "creatorName": "Aashish",
+        "source": null,
+        "location": null,
+        "createdDate": "2020-01-31T10:29:39.643",
+        "updatedDate": "2020-01-31T10:29:39.643",
+        "startDate": "2020-01-31T00:00:00",
+        "endDate": "2020-03-13T00:00:00",
+        "eventDate": null,
+        "interviewMessage": null,
+        "interviewAddress": null,
+        "maxAttemptCount": 0,
+        "status": null,
+        "campaignPurpose": "REGISTER_ONLY",
+        "campaignType": "ONLINE_CAMPAIGN",
+        "campaignTypeId": null,
+        "questionSetFormatId": null,
+        "templateId": null,
+        "role": "QA",
+        "registeredUserIds": [
+            "5e394ca91d9be80006c814cd"
+        ],
+        "passingPercentage": 0.0,
+        "resumeMinutesTime": 0,
+        "tokenMinutesTime": 0,
+        "campaignUrl": "http://codingcafetest-stg.bridgelabz.com/register/ASA",
+        "resultTemplateUrl": null,
+        "additionalInformation": false,
+        "paid": false,
+        "default": false
+    },
+    "message": "Campaign retrieved successfully"
+}
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
