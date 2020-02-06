@@ -1,19 +1,33 @@
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.hamcrest.Matchers;import org.testng.annotations.Test;
+import org.hamcrest.Matchers;
+import org.json.simple.JSONObject;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
-public class AddCampaign {
+import static io.restassured.RestAssured.given;
 
-    String tokenValue="eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUUEiLCJlbWFpbElkIjoidGVzdGluZ3Rlc3RkYXRhYmx6QGdtYWlsLmNvbSIsImlkIjoiNWRjZmRiYmRjNTgzNmIwM" +
-            "DA2OTc4YWFhIiwiZXhwIjoxNTgwODc2ODA0fQ.xVJyvJo7l3UgwXKOaJ9aSDe5p6ALyoVNl5wpYADUnas";
+public class CodingCafeAPI {
+
+    public static JSONObject map =new JSONObject();
+
+    @BeforeClass
+    public void setData() {
+        map.put("address", restUtils.getAddress());
+        map.put("branchName", restUtils.getBranchName());
+        map.put("city", restUtils.getCity());
+        map.put("institutionName", restUtils.getCollegeName());
+        map.put(" institutionType", restUtils.getInstituteTypeName());
+        map.put("shortName", restUtils.getShortName());
+
+    }
 
     @Test
     public void givenMethodForNumberOfCampaignOnDashboard(){
-        Response response = RestAssured.given()
+        Response response = given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .header("token",tokenValue)
+                .header("token",restUtils.tokenValue)
                 .when()
                 .get("https://cccampdash.incubation.bridgelabz.com/campaign/dashboard");
         response.prettyPrint();
@@ -23,12 +37,13 @@ public class AddCampaign {
 
     @Test
     public void givenMethodForGetCampaignDetailsByItsShortName() {
-        Response response = RestAssured.given()
+        Response response = given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .header("token",tokenValue)
+                .header("token",restUtils.tokenValue)
                 .when()
-                .get("https://cccampdash.incubation.bridgelabz.com/campaign/dashbaord/campaign/ASA");
+                .pathParam("campaignShortName","ASA")
+                .get("https://cccampdash.incubation.bridgelabz.com/campaign/dashbaord/campaign/{campaignShortName}");
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
         response.then().assertThat().body("message", Matchers.equalTo("Campaign retrieved successfully"));
@@ -37,10 +52,10 @@ public class AddCampaign {
 
     @Test
     public void givenMethodForGetALLCampaignsShortName()  {
-        Response response = RestAssured.given()
+        Response response = given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .header("token",tokenValue)
+                .header("token",restUtils.tokenValue)
                 .when()
                 .get("https://cccampdash.incubation.bridgelabz.com/campaign/dashboard/campaign/shortname");
         response.prettyPrint();
@@ -51,10 +66,10 @@ public class AddCampaign {
 
     @Test
     public void givenMethodForGetExcelDataOnBasisOfShortName() {
-        Response response = RestAssured.given()
+        Response response = given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .header("token",tokenValue)
+                .header("token",restUtils.tokenValue)
                 .body("{\"campaignEndDate\":\"04 Feb 2020\",\"campaignShortName\":\"ABH\",\"campaignStartDate\":\"07 Feb 2020\"}")
                 .when()
                 .post("https://cccampdash.incubation.bridgelabz.com/campaign/dashboard/exceldata");
@@ -66,14 +81,13 @@ public class AddCampaign {
 
     @Test
     public void givenMethodForAddCollegeOrInstitute(){
-        Response response = RestAssured.given()
+        Response response = given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .header("token",tokenValue)
-                .body("{\"address\":\"NaviMumbai\",\"branchName\":\"computer\",\"city\":\"Turbhe\",\" institutionName\":\"Sandip\",\" institutionType\":\"College\",\"shortName\":\"ABVP\",\"url\":\"http://codingcafetest-stg.bridgelabz.com/register/ABVP \"}")
+                .header("token",restUtils.tokenValue)
+                .body(map.toJSONString())
                 .when()
                 .post("https://cccampdash.incubation.bridgelabz.com/campaign/dashboard/institutions");
-        response.prettyPrint();
         response.then().assertThat().statusCode(200);
         response.then().assertThat().body("message", Matchers.equalTo("Data retrieved successfully"));
 
